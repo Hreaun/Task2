@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.gradlecommunity.jaxb2' version '0.1.0'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+application {
+    mainClassName = 'Main'
+}
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    jaxb2 {
+        java {
+            srcDir 'main/generated'
+        }
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    implementation 'org.postgresql:postgresql:42.3.3'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.1'
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.5.0'
+    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.21'
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '3.0.2'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.18'
+}
+
+jaxb2 {
+    xjc {
+        'request-classes' {
+            basePackage = 'generated'
+            schema = 'src/main/resources/schema/OSMSchema.xsd'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
